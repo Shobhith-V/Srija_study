@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codex — Srija's MBBS Companion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="codex.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SVG SYMBOLS — reusable iconography
+     ═══════════════════════════════════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Dashboard / grid -->
+    <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+    </symbol>
+    <!-- Schedule / calendar -->
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <rect x="3" y="4" width="18" height="18" rx="2"/>
+      <path d="M16 2v4M8 2v4M3 10h18"/>
+    </symbol>
+    <!-- Exams / shield -->
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M12 2L4 5v6c0 5 3.5 9.3 8 11 4.5-1.7 8-6 8-11V5l-8-3z"/>
+      <path d="M9 12l2 2 4-4"/>
+    </symbol>
+    <!-- Advisor / quill -->
+    <symbol id="i-quill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M19 3c-3 4-6 5-10 6-3 1-5 4-5 7 0 2 1 4 3 5 1-3 4-5 7-5 4-1 5-3 6-7 1-3-1-6-1-6z"/>
+      <path d="M4 21l5-5"/>
+    </symbol>
+    <!-- Flashcards -->
+    <symbol id="i-cards" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <rect x="2" y="5" width="20" height="14" rx="2"/>
+      <path d="M2 10h20"/>
+    </symbol>
+    <!-- Settings -->
+    <symbol id="i-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+    </symbol>
+    <!-- Anatomy: stylized bone -->
+    <symbol id="i-bone" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M5 5a2.5 2.5 0 0 1 4.5-1.5L12 6l3-2.5A2.5 2.5 0 1 1 17 8l-2 2.5 5.5 6.5a2.5 2.5 0 0 1-4.5 1.5L13 16l-2.5 2.5A2.5 2.5 0 1 1 6.5 16L9 13.5 3.5 7A2.5 2.5 0 0 1 5 5z" opacity=".88"/>
+    </symbol>
+    <!-- Physio: heart -->
+    <symbol id="i-heart" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5 6 5c2 0 3.5 1 4.5 2.5C11.5 6 13 5 15 5c3.5 0 5 4 3.5 7-2.5 4.5-9.5 9-6.5 9z" opacity=".88"/>
+    </symbol>
+    <!-- Biochem: flask / molecule -->
+    <symbol id="i-flask" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M9 3v6.5L4 19a2 2 0 0 0 1.7 3h12.6A2 2 0 0 0 20 19l-5-9.5V3" opacity=".88"/>
+      <path d="M7 3h10" stroke="currentColor" stroke-width="1.5"/>
+    </symbol>
+    <!-- Caduceus / medical -->
+    <symbol id="i-caduceus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+      <path d="M12 3v18M9 5c0 3 6 3 6 0M9 9c0 3 6 3 6 0M9 13c0 3 6 3 6 0M9 17c0 3 6 3 6 0"/>
+      <path d="M9 4l-2-1M15 4l2-1"/>
+    </symbol>
+    <!-- Sun / moon for theme -->
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+    </symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="shell">
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       SIDEBAR
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <nav id="sidebar" aria-label="Primary">
+    <div class="s-mast">
+      <div class="codex-logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4V4z"/>
+          <path d="M4 4v12a4 4 0 0 0 4 4" />
+          <path d="M9 9h6M9 12h6" stroke-width="1.2"/>
+        </svg>
+        <h1>Codex</h1>
+      </div>
+      <div class="vol">Vol. I &middot; First-Year MBBS</div>
+      <div class="owner">Srija &middot; Medicity, Hyderabad</div>
+    </div>
+
+    <div class="nsec">Overview</div>
+    <div class="ni active" onclick="nav('dashboard')">
+      <svg aria-hidden="true"><use href="#i-grid"/></svg>Dashboard
+    </div>
+    <div class="ni" onclick="nav('schedule')">
+      <svg aria-hidden="true"><use href="#i-cal"/></svg>Daily Docket
+    </div>
+    <div class="ni" onclick="nav('exams')">
+      <svg aria-hidden="true"><use href="#i-shield"/></svg>Examinations
+    </div>
+
+    <div class="nsec">The Subjects</div>
+    <div class="ni" onclick="nav('anatomy')"><div class="sdot" style="background:var(--c-anatomy)"></div>Anatomy</div>
+    <div class="ni" onclick="nav('physio')"><div class="sdot" style="background:var(--c-physio)"></div>Physiology</div>
+    <div class="ni" onclick="nav('biochem')"><div class="sdot" style="background:var(--c-biochem)"></div>Biochemistry</div>
+
+    <div class="nsec">Tools</div>
+    <div class="ni" onclick="nav('advisor')">
+      <svg aria-hidden="true"><use href="#i-quill"/></svg>Counsel
+    </div>
+    <div class="ni" onclick="nav('flashcards')">
+      <svg aria-hidden="true"><use href="#i-cards"/></svg>Card Catalogue
+    </div>
+
+    <div class="nsec">Account</div>
+    <div class="ni" onclick="nav('settings')">
+      <svg aria-hidden="true"><use href="#i-cog"/></svg>Settings
+    </div>
+
+    <div class="s-foot">
+      <span class="monkey" title="Hi 🍌" onclick="monkeyTap()">🐒</span>
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+        <svg id="theme-icon" viewBox="0 0 24 24"></svg>
+        <span id="theme-lbl">Light</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       MAIN
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div id="main">
+    <div class="topbar">
+      <div class="crumb">
+        <button id="mbtn" onclick="document.getElementById('sidebar').classList.toggle('open')" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <h2 id="ptitle">Dashboard</h2>
+        <span class="folio" id="pfolio">today at a glance</span>
+      </div>
+      <div class="top-right">
+        <span class="streak-pill" id="sbadge"></span>
+        <div class="avatar">S</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         DASHBOARD
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div id="page-dashboard" class="page active">
+
+      <section class="hero">
+        <svg class="hero-bg-veena" viewBox="0 0 200 200" aria-hidden="true">
+          <!-- Stylized veena outline -->
+          <ellipse cx="60" cy="140" rx="42" ry="38" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <ellipse cx="60" cy="140" rx="32" ry="28" fill="none" stroke="currentColor" stroke-width="1"/>
+          <circle cx="60" cy="140" r="6" fill="currentColor"/>
+          <path d="M60 100 L165 25" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <ellipse cx="170" cy="20" rx="14" ry="10" fill="none" stroke="currentColor" stroke-width="1.2" transform="rotate(-30 170 20)"/>
+          <path d="M75 95 L155 30 M70 90 L150 27 M65 88 L145 30 M62 86 L140 33" stroke="currentColor" stroke-width="0.5" fill="none" opacity=".8"/>
+        </svg>
+        <div class="hero-row">
+          <div class="hero-l">
+            <div class="eyebrow">Codex &middot; Volume I</div>
+            <h1 class="greeting" id="wgreeting">Good morning, <span class="firstn">Srija</span></h1>
+            <div class="sub">MBBS, First Year &middot; Medicity Medical College, Hyderabad</div>
+            <blockquote class="quote" id="wquote">Every topic ticked off is a small candle lit toward becoming the doctor you want to be.</blockquote>
+          </div>
+          <div class="hero-r">
+            <div class="today-date" id="today-week">Today</div>
+            <div class="today-num" id="today-num">—</div>
+            <div class="today-month" id="today-month">—</div>
+            <div class="streak-line"><span id="wstreak-big"></span> <span class="serif-i" style="color:var(--ink-3);font-size:11px" id="wstreak-lbl"></span></div>
+          </div>
+        </div>
+      </section>
+
+      <div id="finals-banner" class="banner-finals" style="display:none"></div>
+      <div id="prefinals-banner" class="banner-prefinals" style="display:none"></div>
+      <div id="apiwarn" class="warn" style="display:none">
+        <span>⚠</span><span>No API key — Counsel and AI flashcards are paused.</span>
+        <button class="btn btn-g btn-sm" style="margin-left:auto" onclick="nav('settings')">Add key →</button>
+      </div>
+
+      <!-- THE THREE TOMES -->
+      <div class="orn-rule" style="margin: 26px 0 14px"><span>The Three Tomes</span></div>
+      <div class="tomes">
+        <div class="tome" data-subject="anatomy" onclick="nav('anatomy')">
+          <svg class="t-icon" aria-hidden="true"><use href="#i-bone"/></svg>
+          <div class="t-eyebrow"><span class="roman">I.</span> Anatomy</div>
+          <div class="t-name">Anatomy</div>
+          <div class="t-book">after Vishram Singh</div>
+          <div class="t-progress-row">
+            <div class="t-pct"><span id="dap">0</span><span class="pct-sign">%</span></div>
+            <div class="t-counts" id="dal"><span class="big">0</span> / 0 topics</div>
+          </div>
+          <div class="t-bar"><div id="dpap" style="width:0%"></div></div>
+        </div>
+        <div class="tome" data-subject="physiology" onclick="nav('physio')">
+          <svg class="t-icon" aria-hidden="true"><use href="#i-heart"/></svg>
+          <div class="t-eyebrow"><span class="roman">II.</span> Physiology</div>
+          <div class="t-name">Physiology</div>
+          <div class="t-book">after GK Pal & Guyton</div>
+          <div class="t-progress-row">
+            <div class="t-pct"><span id="dpp">0</span><span class="pct-sign">%</span></div>
+            <div class="t-counts" id="dpl"><span class="big">0</span> / 0 topics</div>
+          </div>
+          <div class="t-bar"><div id="dppp" style="width:0%"></div></div>
+        </div>
+        <div class="tome" data-subject="biochemistry" onclick="nav('biochem')">
+          <svg class="t-icon" aria-hidden="true"><use href="#i-flask"/></svg>
+          <div class="t-eyebrow"><span class="roman">III.</span> Biochemistry</div>
+          <div class="t-name">Biochemistry</div>
+          <div class="t-book">after D.M. Vasudevan</div>
+          <div class="t-progress-row">
+            <div class="t-pct"><span id="dbp">0</span><span class="pct-sign">%</span></div>
+            <div class="t-counts" id="dbl"><span class="big">0</span> / 0 topics</div>
+          </div>
+          <div class="t-bar"><div id="dpbp" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <div class="g2" style="margin-bottom:20px">
+        <div class="card">
+          <div class="section-head">
+            <div class="sh-title"><span class="sh-num">i.</span>On the Horizon</div>
+            <button class="btn btn-g btn-sm" onclick="nav('exams')">All exams →</button>
+          </div>
+          <div id="dexams"></div>
+        </div>
+        <div class="card">
+          <div class="section-head">
+            <div class="sh-title"><span class="sh-num">ii.</span>Today's Page</div>
+            <button class="btn btn-g btn-sm" onclick="nav('schedule')">Full docket →</button>
+          </div>
+          <div id="dtoday"></div>
+        </div>
+      </div>
+
+      <div class="card streak-card" style="margin-bottom:20px">
+        <div class="sl">
+          <div class="num" id="wstreak-big-2">—</div>
+          <div class="lbl">days of study</div>
+        </div>
+        <div class="sr">
+          <div class="st">A month of pages</div>
+          <div id="sgrid"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-head">
+          <div class="sh-title"><span class="sh-num">iii.</span>A Quick Word</div>
+        </div>
+        <div class="quick-prompts" style="margin-bottom:14px">
+          <button class="btn btn-g btn-sm" onclick="qa('Plan my week based on my progress')">Plan my week</button>
+          <button class="btn btn-g btn-sm" onclick="qa('What should I revise today?')">What to revise</button>
+          <button class="btn btn-g btn-sm" onclick="qa('What are the most important topics from Vasudevan Biochemistry for NTR exams?')">Vasudevan hotspots</button>
+          <button class="btn btn-g btn-sm" onclick="qa('Give me important chapters from GK Pal Physiology for NTR university theory exams')">GK Pal tips</button>
+        </div>
+        <div id="dchat" class="chat-area" style="min-height:80px;max-height:240px">
+          <div class="msg ma">
+            <div class="mlbl">Codex Counsel</div>
+            Hello Srija. Use a prompt above, or ask whatever you like — I'm listening.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SCHEDULE
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div id="page-schedule" class="page">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px">
+        <div class="pills">
+          <div class="pill active" onclick="stab('week',this)">This Week</div>
+          <div class="pill" onclick="stab('all',this)">All</div>
+          <div class="pill" onclick="stab('revision',this)">Revisions</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-g btn-sm" onclick="openM('mm')">Missed a day</button>
+          <button class="btn btn-p btn-sm" onclick="openM('mt')">+ Add Task</button>
+        </div>
+      </div>
+      <div id="scontent"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         EXAMS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div id="page-exams" class="page">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:22px">
+        <button class="btn btn-p btn-sm" onclick="openM('me')">+ Add Examination</button>
+      </div>
+      <div class="st">Upcoming</div>
+      <div id="exup" style="display:flex;flex-direction:column;gap:10px;margin-bottom:26px"></div>
+      <div class="st">Past</div>
+      <div id="expast" style="display:flex;flex-direction:column;gap:10px"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SUBJECT PAGES — Anatomy, Physiology, Biochemistry
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div id="page-anatomy" class="page">
+      <div class="subj-mast">
+        <div>
+          <div class="eyebrow"><span class="roman">Volume I</span></div>
+          <h1>Anatomy</h1>
+          <div class="att">after Vishram Singh &middot; Gray's for reference</div>
+        </div>
+        <div class="progress-side">
+          <div class="ps-num"><span id="apct">0%</span></div>
+          <div class="ps-count" id="aptxt">0 / 0 done</div>
+          <div class="ps-bar"><div id="ppa" style="background:var(--c-anatomy);width:0%"></div></div>
+        </div>
+      </div>
+      <div id="abody"></div>
+    </div>
+
+    <div id="page-physio" class="page">
+      <div class="subj-mast">
+        <div>
+          <div class="eyebrow"><span class="roman">Volume II</span></div>
+          <h1>Physiology</h1>
+          <div class="att">after G.K. Pal &middot; Guyton & Hall</div>
+        </div>
+        <div class="progress-side">
+          <div class="ps-num"><span id="ppct">0%</span></div>
+          <div class="ps-count" id="pptxt">0 / 0 done</div>
+          <div class="ps-bar"><div id="ppp" style="background:var(--c-physio);width:0%"></div></div>
+        </div>
+      </div>
+      <div id="pbody"></div>
+    </div>
+
+    <div id="page-biochem" class="page">
+      <div class="subj-mast">
+        <div>
+          <div class="eyebrow"><span class="roman">Volume III</span></div>
+          <h1>Biochemistry</h1>
+          <div class="att">after D.M. Vasudevan &middot; Harper's</div>
+        </div>
+        <div class="progress-side">
+          <div class="ps-num"><span id="bpct">0%</span></div>
+          <div class="ps-count" id="bptxt">0 / 0 done</div>
+          <div class="ps-bar"><div id="ppb" style="background:var(--c-biochem);width:0%"></div></div>
+        </div>
+      </div>
+      <div id="bbody"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         ADVISOR
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div id="page-advisor" class="page">
+      <div class="adv-mast">
+        <div class="letterhead">Codex &middot; Personal Counsel</div>
+        <h2>To Srija — from your study counsel</h2>
+        <p>"Ask me what you would ask a senior who has been through this. I'll be specific."</p>
+      </div>
+
+      <div class="g2" style="margin-bottom:14px">
+        <div>
+          <div class="st">Mode</div>
+          <div class="pills">
+            <div class="pill active" onclick="setMode('chat',this)">Chat</div>
+            <div class="pill" onclick="setMode('schedule',this)">Schedule</div>
+            <div class="pill" onclick="setMode('explain',this)">Explain</div>
+            <div class="pill" onclick="setMode('feedback',this)">Feedback</div>
+          </div>
+        </div>
+        <div>
+          <div class="st">Subject focus</div>
+          <select id="asubj">
+            <option value="all">All Subjects</option>
+            <option value="anatomy">Anatomy (Vishram Singh)</option>
+            <option value="physiology">Physiology (GK Pal / Guyton)</option>
+            <option value="biochemistry">Biochemistry (Vasudevan)</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="exam-phase-info" style="display:none;margin-bottom:12px">
+        <div id="exam-phase-msg" class="warn" style="margin-bottom:0"></div>
+      </div>
+
+      <div id="ahint" class="csm" style="margin-bottom:14px;font-size:13.5px;color:var(--ink-2);font-family:var(--serif);font-style:italic"><span style="color:var(--gold);font-style:normal">❦</span> Speak freely — ask for plans, explanations, or scheduling help.</div>
+
+      <div id="achat" class="chat-area">
+        <div class="msg ma">
+          <div class="mlbl">Codex Counsel</div>
+          Hello Srija. I know your books — Vishram Singh, GK Pal, Guyton, Vasudevan — and the NTR pattern. Tell me what's on your mind. I'll help you plan, revise, or understand anything.
+        </div>
+      </div>
+
+      <div class="crow">
+        <input type="text" id="ainput" placeholder="Type your message…" onkeydown="if(event.key==='Enter')sendAdv()">
+        <button class="btn btn-p" onclick="sendAdv()">Send</button>
+      </div>
+
+      <div style="margin-top:22px">
+        <div class="st">Quick prompts</div>
+        <div class="quick-prompts">
+          <button class="btn btn-g btn-sm" onclick="fa('Make me a study schedule for this week based on my current progress.')">This week's plan</button>
+          <button class="btn btn-g btn-sm" onclick="fa('I have an exam in 5 days. What should I focus on and how should I revise?')">Exam in 5 days</button>
+          <button class="btn btn-g btn-sm" onclick="fa('I was sick yesterday and missed all my study. How do I catch up without burning out?')">Missed yesterday</button>
+          <button class="btn btn-g btn-sm" onclick="fa('What are the most important topics from Vasudevan Biochemistry for NTR university exams? Give chapter-wise weightage.')">Vasudevan hotspots</button>
+          <button class="btn btn-g btn-sm" onclick="fa('Give me important topics from GK Pal Physiology that are frequently asked in NTR university theory exams.')">GK Pal key topics</button>
+          <button class="btn btn-g btn-sm" onclick="fa('What chapters in Vishram Singh Anatomy are most important for 1st year MBBS theory and viva?')">Vishram Singh tips</button>
+          <button class="btn btn-g btn-sm" onclick="fa('I feel overwhelmed with the MBBS syllabus. Help me make a realistic daily plan.')">Feeling overwhelmed</button>
+          <button class="btn btn-g btn-sm" onclick="fa('How should I prepare for MBBS 1st year university practical exams and viva?')">Practical exam tips</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         FLASHCARDS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div id="page-flashcards" class="page">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px">
+        <div class="pills">
+          <div class="pill active" onclick="fctab('browse',this)">Catalogue</div>
+          <div class="pill" onclick="fctab('study',this)">Study</div>
+          <div class="pill" onclick="fctab('gen',this)">AI Generate</div>
+        </div>
+        <button class="btn btn-p btn-sm" onclick="openM('mfc')">+ Add Card</button>
+      </div>
+      <div id="fcbrowse"><div id="fclist" class="fc-grid"></div></div>
+      <div id="fcstudy" style="display:none;max-width:640px;margin:0 auto">
+        <div id="fcsw" class="fcc" onclick="flipFC()">
+          <div class="ff" id="fcqt">No cards yet.</div>
+          <div class="fb" id="fcat"></div>
+          <div class="fh">Tap to reveal</div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:10px;margin-top:16px">
+          <button class="btn btn-g btn-sm" onclick="rateFC()">Hard</button>
+          <button class="btn btn-g btn-sm" onclick="rateFC()">Okay</button>
+          <button class="btn btn-p btn-sm" onclick="rateFC()">Got it</button>
+        </div>
+        <div style="text-align:center;margin-top:12px;font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink-3)" id="fcidx"></div>
+      </div>
+      <div id="fcgen" style="display:none">
+        <div class="card" style="max-width:600px">
+          <div class="section-head">
+            <div class="sh-title"><span class="sh-num">✦</span>Generate Cards</div>
+          </div>
+          <div class="fg"><label>Subject</label>
+            <select id="fgs">
+              <option value="anatomy">Anatomy</option>
+              <option value="physiology">Physiology</option>
+              <option value="biochemistry">Biochemistry</option>
+            </select>
+          </div>
+          <div class="fg"><label>Topic / Chapter</label><input type="text" id="fgt" placeholder="e.g. Brachial plexus, Cardiac cycle, Glycolysis"></div>
+          <div class="fg"><label>Number of cards</label>
+            <select id="fgc">
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+          <button class="btn btn-p" onclick="genFCs()">Generate</button>
+          <div id="fgst" style="margin-top:10px;font-size:12px;color:var(--ink-2);font-family:var(--serif);font-style:italic"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         SETTINGS
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div id="page-settings" class="page">
+      <div class="settings-grid">
+        <div class="card settings-card">
+          <h3>Anthropic API Key</h3>
+          <p class="sc-sub">Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. Stored only in this browser.</p>
+          <div class="fg"><label>API Key</label><input type="password" id="kfield" placeholder="sk-ant-…"></div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-p" onclick="saveKey()">Save</button>
+            <button class="btn btn-g" onclick="clearKey()">Clear</button>
+          </div>
+          <div id="kst" style="margin-top:12px;font-size:12px;font-family:var(--serif);font-style:italic;color:var(--ink-3)"></div>
+        </div>
+
+        <div class="card settings-card">
+          <h3>Your Library</h3>
+          <p class="sc-sub">Counsel knows all of these by heart — no upload needed.</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="csm" style="display:flex;align-items:center;gap:10px"><span class="badge b-anatomy">Anatomy</span><span style="font-size:13.5px">Vishram Singh — <em class="serif-i">Textbook of Anatomy</em> (Vols I–III)</span></div>
+            <div class="csm" style="display:flex;align-items:center;gap:10px"><span class="badge b-anatomy">Anatomy</span><span style="font-size:13.5px">Gray's Anatomy <em class="serif-i muted">(reference)</em></span></div>
+            <div class="csm" style="display:flex;align-items:center;gap:10px"><span class="badge b-physiology">Physiology</span><span style="font-size:13.5px">G.K. Pal — <em class="serif-i">Textbook of Practical Physiology</em></span></div>
+            <div class="csm" style="display:flex;align-items:center;gap:10px"><span class="badge b-physiology">Physiology</span><span style="font-size:13.5px">Guyton & Hall — <em class="serif-i">Medical Physiology</em></span></div>
+            <div class="csm" style="display:flex;align-items:center;gap:10px"><span class="badge b-biochemistry">Biochemistry</span><span style="font-size:13.5px">D.M. Vasudevan — <em class="serif-i">Textbook of Biochemistry</em></span></div>
+          </div>
+        </div>
+
+        <div class="card settings-card">
+          <h3>Your Data</h3>
+          <p class="sc-sub">Everything is saved locally in this browser. Nothing leaves it except calls to Anthropic.</p>
+          <button class="btn btn-g btn-sm" style="color:var(--err);border-color:var(--accent)" onclick="if(confirm('Reset ALL data?')){localStorage.removeItem('medtrack');location.reload()}">Reset all data</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /#main -->
+</div><!-- /#shell -->
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MODALS
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="mbd" id="mt"><div class="mdl">
+  <h3>Add Task</h3>
+  <div class="modal-sub">A new entry in the docket.</div>
+  <div class="fg"><label>Task</label><input type="text" id="tn" placeholder="e.g. Read Vasudevan Ch.4 Glycolysis"></div>
+  <div class="fg"><label>Subject</label><select id="ts"><option value="anatomy">Anatomy</option><option value="physiology">Physiology</option><option value="biochemistry">Biochemistry</option><option value="general">General</option></select></div>
+  <div class="fg"><label>Date</label><input type="date" id="td"></div>
+  <div class="fg"><label>Type</label><select id="tt"><option value="study">Study</option><option value="revision">Revision</option><option value="practice">Practice / MCQs</option><option value="practical">Practical</option></select></div>
+  <div class="modal-actions">
+    <button class="btn btn-g" onclick="closeM('mt')">Cancel</button>
+    <button class="btn btn-p" onclick="addTask()">Add</button>
+  </div>
+</div></div>
+
+<div class="mbd" id="me"><div class="mdl">
+  <h3>Add Examination</h3>
+  <div class="modal-sub">Internal, pre-finals, or finals.</div>
+  <div class="fg"><label>Title</label><input type="text" id="en" placeholder="e.g. Anatomy Theory Unit I"></div>
+  <div class="fg"><label>Subject</label><select id="es"><option value="anatomy">Anatomy</option><option value="physiology">Physiology</option><option value="biochemistry">Biochemistry</option><option value="all">All Subjects</option></select></div>
+  <div class="fg"><label>Date</label><input type="date" id="ed"></div>
+  <div class="fg"><label>Type</label><select id="et" onchange="toggleExamPhase(this)">
+    <option value="theory">Theory (Internal)</option>
+    <option value="practical">Practical (Internal)</option>
+    <option value="internal">Internal Assessment</option>
+    <option value="viva">Viva</option>
+    <option value="assignment">Assignment</option>
+    <option value="prefinals_theory">Pre-Finals — Theory</option>
+    <option value="prefinals_practical">Pre-Finals — Practical</option>
+    <option value="prefinals_viva">Pre-Finals — Viva</option>
+    <option value="finals_theory">Finals — Theory ★</option>
+    <option value="finals_practical">Finals — Practical ★</option>
+    <option value="finals_viva">Finals — Viva ★</option>
+  </select></div>
+  <div class="fg"><label>Notes (optional)</label><input type="text" id="enotes" placeholder="e.g. Units 1–3"></div>
+  <div class="modal-actions">
+    <button class="btn btn-g" onclick="closeM('me')">Cancel</button>
+    <button class="btn btn-p" onclick="addExam()">Add</button>
+  </div>
+</div></div>
+
+<div class="mbd" id="mm"><div class="mdl">
+  <h3>Missed Study Day</h3>
+  <div class="modal-sub">It happens. Let's reschedule and ask Counsel for a catch-up plan.</div>
+  <div class="fg"><label>Date missed</label><input type="date" id="msd"></div>
+  <div class="fg"><label>Reason</label><select id="msr">
+    <option value="sick">Was sick / unwell</option>
+    <option value="personal">Personal matter</option>
+    <option value="power">Power cut / connectivity</option>
+    <option value="overwhelmed">Felt overwhelmed</option>
+    <option value="other">Other</option>
+  </select></div>
+  <div class="fg"><label>Notes (optional)</label><textarea id="msn" placeholder="Anything else?"></textarea></div>
+  <div class="modal-actions">
+    <button class="btn btn-g" onclick="closeM('mm')">Cancel</button>
+    <button class="btn btn-p" onclick="handleMissed()">Reschedule & Advise</button>
+  </div>
+</div></div>
+
+<div class="mbd" id="mfc"><div class="mdl">
+  <h3>Add Flashcard</h3>
+  <div class="modal-sub">A small card for the catalogue.</div>
+  <div class="fg"><label>Subject</label><select id="fcs">
+    <option value="anatomy">Anatomy</option>
+    <option value="physiology">Physiology</option>
+    <option value="biochemistry">Biochemistry</option>
+  </select></div>
+  <div class="fg"><label>Question (Front)</label><textarea id="fcq" placeholder="e.g. Contents of carpal tunnel?"></textarea></div>
+  <div class="fg"><label>Answer (Back)</label><textarea id="fca" placeholder="e.g. Median nerve + 9 flexor tendons"></textarea></div>
+  <div class="modal-actions">
+    <button class="btn btn-g" onclick="closeM('mfc')">Cancel</button>
+    <button class="btn btn-p" onclick="addFC()">Add</button>
+  </div>
+</div></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     FLOATING — STUDY BUDDY + TIMER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<button id="fchat-btn" onclick="toggleFC()" title="Chat with your study buddy" aria-label="Open study buddy">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+
+<div id="fchat-panel">
+  <div id="fchat-header">
+    <div>
+      <div class="name">Your Study Buddy</div>
+      <div class="sub serif-i">always here, never grading</div>
+    </div>
+    <button class="close-x" onclick="toggleFC()">✕</button>
+  </div>
+  <div id="fchat-msgs">
+    <div class="fcmsg fcma">Hi Srija. I'm here whenever — about subjects, study methods, or just to talk through a rough day.</div>
+  </div>
+  <div class="fc-starters" id="fc-starters">
+    <button class="fc-starter" onclick="fcs(this.textContent)">I can't focus on this topic 😩</button>
+    <button class="fc-starter" onclick="fcs(this.textContent)">What's the best way to study Biochemistry?</button>
+    <button class="fc-starter" onclick="fcs(this.textContent)">I'm feeling really overwhelmed</button>
+    <button class="fc-starter" onclick="fcs(this.textContent)">How do I stop forgetting what I study?</button>
+  </div>
+  <div id="fchat-input-row">
+    <input type="text" id="fchat-input" placeholder="Just talk to me…" onkeydown="if(event.key==='Enter')sendFC()">
+    <button class="btn btn-p btn-sm" onclick="sendFC()">Send</button>
+  </div>
+</div>
+
+<button id="timer-btn" onclick="toggleTimer()" title="Study timer" aria-label="Open timer">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6M12 2v3"/></svg>
+</button>
+
+<div id="timer-panel">
+  <div id="timer-header">
+    <span>Hourglass</span>
+    <button class="close-x" onclick="toggleTimer()">✕</button>
+  </div>
+  <div id="timer-body">
+    <div id="timer-display">
+      <div id="timer-clock">25:00</div>
+      <div id="timer-label">Ready to focus</div>
+    </div>
+    <div id="timer-progress"><div id="timer-prog-fill"></div></div>
+    <div id="timer-subject-row">
+      <label>Studying</label>
+      <select id="timer-subj">
+        <option value="anatomy">Anatomy</option>
+        <option value="physiology">Physiology</option>
+        <option value="biochemistry">Biochemistry</option>
+        <option value="general">General / Mixed</option>
+      </select>
+    </div>
+    <div class="timer-presets">
+      <div class="tpreset active" onclick="setPreset(25,this)">25 min</div>
+      <div class="tpreset" onclick="setPreset(45,this)">45 min</div>
+      <div class="tpreset" onclick="setPreset(60,this)">60 min</div>
+      <div class="tpreset" onclick="setPreset(90,this)">90 min</div>
+      <div class="tpreset" onclick="setPreset(0,this)">Custom</div>
+    </div>
+    <div id="timer-custom-row" style="display:none">
+      <label>Minutes:</label>
+      <input type="number" id="timer-custom-min" min="1" max="180" value="30" onchange="setCustom()">
+    </div>
+    <div class="timer-btns">
+      <button id="tbtn-start" onclick="startTimer()">Start</button>
+      <button id="tbtn-pause" onclick="pauseTimer()">Pause</button>
+      <button id="tbtn-stop" onclick="openDistract()">Stop & Log</button>
+      <button id="tbtn-reset" onclick="resetTimer()">Reset</button>
+    </div>
+  </div>
+  <div id="timer-session-log" style="display:none">
+    <div class="st">Today's sessions</div>
+    <div id="tlog-list"></div>
+  </div>
+  <div id="timer-distract-log" style="display:none">
+    <div class="st">Today's pauses</div>
+    <div id="dlog-list"></div>
+  </div>
+</div>
+
+<!-- DISTRACTION MODAL -->
+<div id="distract-modal">
+  <div id="distract-box">
+    <h3>What happened, Srija?</h3>
+    <p>No judgement — logging it teaches you your own focus patterns.</p>
+    <div class="dreason" id="dreason-btns">
+      <button onclick="selReason(this)">📱 Phone distraction</button>
+      <button onclick="selReason(this)">😴 Felt sleepy</button>
+      <button onclick="selReason(this)">🧠 Lost concentration</button>
+      <button onclick="selReason(this)">👨‍👩‍👧 Family interruption</button>
+      <button onclick="selReason(this)">🔊 Noise / environment</button>
+      <button onclick="selReason(this)">😰 Topic too difficult</button>
+      <button onclick="selReason(this)">😩 Mental fatigue</button>
+      <button onclick="selReason(this)">🌐 Got distracted online</button>
+      <button onclick="selReason(this)">🍽️ Hungry / needed break</button>
+      <button onclick="selReason(this)">💭 Mind wandering</button>
+    </div>
+    <div id="distract-note">
+      <label style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:6px;font-weight:500">Anything else? (optional)</label>
+      <input type="text" id="dnote" placeholder="e.g. kept thinking about…">
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-p" style="flex:1" onclick="logDistraction()">Log & Stop</button>
+      <button class="btn btn-g" onclick="closeDistract()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOCUS OVERLAY -->
+<div id="focus-overlay">
+  <div id="focus-subject-badge">Anatomy &middot; Focus Session</div>
+  <div id="focus-prog-ring">
+    <svg width="220" height="220" viewBox="0 0 200 200">
+      <circle id="focus-ring-bg" cx="100" cy="100" r="88" fill="none" stroke-width="3"/>
+      <circle id="focus-ring-fill" cx="100" cy="100" r="88" fill="none" stroke-width="3"
+        stroke-linecap="round"
+        transform="rotate(-90 100 100)"
+        stroke-dasharray="553"
+        stroke-dashoffset="0"/>
+      <text id="focus-clock-svg" x="100" y="113" text-anchor="middle"
+        font-family="Cormorant Garamond, serif" font-size="42" font-weight="500"
+        fill="currentColor">25:00</text>
+    </svg>
+  </div>
+  <div id="focus-topic">Loading your topic…</div>
+  <div id="focus-tip"></div>
+  <div id="focus-controls">
+    <button id="fbtn-pause" onclick="focusPause()">Pause</button>
+    <button id="fbtn-stop" onclick="openDistract()">Stop & Log</button>
+    <button id="fbtn-exit" onclick="exitFocus()">Exit focus mode</button>
+  </div>
+</div>
+
+<div id="focus-nudge">
+  <span id="focus-nudge-msg">Still with it, Srija?</span>
+  <button onclick="dismissNudge()" style="background:var(--accent);color:var(--paper);border:none;border-radius:20px;padding:5px 14px;font-size:12px;cursor:pointer;font-family:var(--sans);font-weight:500;font-style:normal">Yes</button>
+</div>
+
+<div id="focus-checkin">
+  <div id="focus-checkin-box">
+    <h3 id="fcheckin-title">Quick check-in</h3>
+    <p id="fcheckin-msg">You've been studying for a while. How are you doing, Srija?</p>
+    <div class="checkin-btns">
+      <button class="checkin-btn" style="color:var(--success);border-color:var(--success)" onclick="checkinResponse('great')">Going strong</button>
+      <button class="checkin-btn" style="color:var(--gold-2);border-color:var(--gold)" onclick="checkinResponse('ok')">Bit distracted</button>
+      <button class="checkin-btn" style="color:var(--accent);border-color:var(--accent)" onclick="checkinResponse('lost')">Lost focus</button>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes floatup {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-50px); }
+}
+</style>
+
+<script src="codex.js"></script>
+</body>
+</html>
