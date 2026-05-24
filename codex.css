@@ -97,8 +97,8 @@ html, body { background: var(--bg); color: var(--ink); }
 
 body {
   font-family: var(--sans);
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.7;
   min-height: 100vh;
   display: flex;
   font-feature-settings: 'ss01', 'kern';
@@ -129,7 +129,7 @@ input, textarea, select {
   color: var(--ink);
   border-radius: var(--r);
   padding: 10px 14px;
-  font-size: 14px;
+  font-size: 15px;
   width: 100%;
   outline: none;
   transition: border-color .15s, background .15s;
@@ -298,7 +298,7 @@ select { cursor: pointer; }
   margin: 1px 10px;
   border-radius: var(--r-sm);
   cursor: pointer;
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--ink-2);
   transition: background .12s, color .12s;
   position: relative;
@@ -830,7 +830,7 @@ select { cursor: pointer; }
   font-size: 11px;
   font-weight: 700;
 }
-.tnm { flex: 1; font-size: 13.5px; line-height: 1.5; }
+.tnm { flex: 1; font-size: 14.5px; line-height: 1.55; }
 .tnm.done { text-decoration: line-through; color: var(--ink-3); }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -894,8 +894,8 @@ select { cursor: pointer; }
   max-width: 88%;
   padding: 12px 16px;
   border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.65;
+  font-size: 15px;
+  line-height: 1.7;
   white-space: pre-wrap;
 }
 .mu {
@@ -1046,7 +1046,7 @@ select { cursor: pointer; }
 .tkck:hover { border-color: var(--accent); }
 .tkck.done { background: var(--accent); border-color: var(--accent); }
 .tkck.done::after { content: '✓'; color: var(--paper); font-size: 10px; font-weight: 700; }
-.tktxt { flex: 1; font-size: 13.5px; line-height: 1.5; }
+.tktxt { flex: 1; font-size: 14.5px; line-height: 1.55; }
 .tktxt.done { text-decoration: line-through; color: var(--ink-3); }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -1571,8 +1571,8 @@ select { cursor: pointer; }
   max-width: 92%;
   padding: 10px 14px;
   border-radius: 12px;
-  font-size: 13.5px;
-  line-height: 1.65;
+  font-size: 14.5px;
+  line-height: 1.7;
   white-space: pre-wrap;
 }
 .fcmu { background: var(--accent); color: var(--paper); align-self: flex-end; border-radius: 12px 12px 4px 12px; }

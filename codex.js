@@ -3,6 +3,7 @@
    ════════════════════════════════════════════════════════════════════════ */
 
 const API = "https://api.anthropic.com/v1/messages";
+// HARDCODED_KEY is defined in config.js (gitignored) — paste your key there
 
 /* ─── DEFAULT TOPIC TREES ─────────────────────────────────────────────── */
 function DT(s){
@@ -47,7 +48,7 @@ let S = JSON.parse(localStorage.getItem('medtrack') || 'null') || {
   streak: {}, advHist: []
 };
 function save(){ localStorage.setItem('medtrack', JSON.stringify(S)); }
-function gk(){ return localStorage.getItem('mt_key') || ''; }
+function gk(){ return HARDCODED_KEY || localStorage.getItem('mt_key') || ''; }
 
 /* ─── THEME ───────────────────────────────────────────────────────────── */
 function getTheme(){ return localStorage.getItem('codex_theme') || 'light'; }
@@ -555,6 +556,14 @@ async function qa(msg){
   amsg('dchat', msg, 'user');
   const sys = `You are Codex, a concise study counsel for Srija, MBBS 1st year at Medicity Medical College, Hyderabad (NTR University). Be brief and practical. Books: Vishram Singh, GK Pal+Guyton, Vasudevan. NTR pattern: LAQs (10m), SAQs (5m), MCQs (1m). Progress — A:${sts('anatomy').pct}%, P:${sts('physiology').pct}%, B:${sts('biochemistry').pct}%. Today: ${new Date().toISOString().split('T')[0]}.`;
   await callai(sys, [{ role:'user', content: msg }], 'dchat');
+}
+
+function sendDash(){
+  const inp = document.getElementById('dchat-input');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+  qa(msg);
 }
 
 async function callai(sys, msgs, chatId){

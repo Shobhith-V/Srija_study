@@ -270,6 +270,10 @@
             Hello Srija. Use a prompt above, or ask whatever you like — I'm listening.
           </div>
         </div>
+        <div class="crow" style="margin-top:10px">
+          <input type="text" id="dchat-input" placeholder="Ask anything…" onkeydown="if(event.key==='Enter')sendDash()">
+          <button class="btn btn-p" onclick="sendDash()">Send</button>
+        </div>
       </div>
     </div>
 
@@ -746,6 +750,7 @@
 }
 </style>
 
+<script src="config.js"></script>
 <script src="codex.js"></script>
 </body>
 </html>
