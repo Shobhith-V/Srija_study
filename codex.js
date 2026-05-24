@@ -48,7 +48,7 @@ let S = JSON.parse(localStorage.getItem('medtrack') || 'null') || {
   streak: {}, advHist: []
 };
 function save(){ localStorage.setItem('medtrack', JSON.stringify(S)); }
-function gk(){ return HARDCODED_KEY || localStorage.getItem('mt_key') || ''; }
+function gk(){ return (typeof HARDCODED_KEY !== 'undefined' && HARDCODED_KEY) || localStorage.getItem('mt_key') || ''; }
 
 /* ─── THEME ───────────────────────────────────────────────────────────── */
 function getTheme(){ return localStorage.getItem('codex_theme') || 'light'; }
