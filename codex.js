@@ -585,7 +585,7 @@ async function callai(sys, msgs, chatId){
         'anthropic-dangerous-direct-browser-access':'true'
       },
       body: JSON.stringify({
-        model:'claude-sonnet-4-5',
+        model:'claude-sonnet-4-6',
         max_tokens: 1024,
         system: sys,
         messages: msgs
@@ -593,7 +593,7 @@ async function callai(sys, msgs, chatId){
     });
     const d = await r.json();
     thk.remove();
-    if(d.error){ amsg(chatId, 'Error: '+d.error.message, 'ai'); return null; }
+    if(d.error){ amsg(chatId, '⚠ Error: '+d.error.message+' ('+d.error.type+')', 'ai'); return null; }
     const txt = d.content?.map(c => c.text || '').join('') || 'No response.';
     amsg(chatId, txt.replace(/TASKS_JSON:\s*\[[\s\S]*?\]/, '').trim(), 'ai');
     return txt;
@@ -685,7 +685,7 @@ async function genFCs(){
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body: JSON.stringify({
-        model:'claude-sonnet-4-5',
+        model:'claude-sonnet-4-6',
         max_tokens: 1024,
         messages:[{ role:'user', content:`Generate ${c} MBBS flashcards for ${s}, topic: "${t}". Reference ${bk[s]}. Focus on NTR university exam content. Return ONLY a JSON array, no markdown: [{"q":"question","a":"concise answer"}]` }]
       })
@@ -844,7 +844,7 @@ async function sendFC(){
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body: JSON.stringify({
-        model:'claude-sonnet-4-5',
+        model:'claude-sonnet-4-6',
         max_tokens: 600,
         system: buildFCSystem(),
         messages: fcHistory
@@ -852,7 +852,7 @@ async function sendFC(){
     });
     const d = await r.json();
     thk.remove();
-    if(d.error){ fcAmsg('Hmm, something went wrong: '+d.error.message, 'ai'); return; }
+    if(d.error){ fcAmsg('⚠ Error: '+d.error.message+' ('+d.error.type+')', 'ai'); return; }
     const txt = d.content?.map(c => c.text || '').join('') || '...';
     fcAmsg(txt, 'ai');
     fcHistory.push({ role:'assistant', content: txt });
